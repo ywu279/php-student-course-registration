@@ -16,7 +16,15 @@
         $passwordErr = ValidatePassword($Password);
 
         if(!$idErr && !$passwordErr){
-            $sqlLogin = "SELECT StudentId FROM Student WHERE StudentId = '$id' AND Password = '$Password'";
+            //prevent SQL-injection attack
+            $conn = new mysqli("localhost", $username, $password);
+            $id = mysqli_real_escape_string($conn, $id);
+            $Password = mysqli_real_escape_string($conn, $Password);
+
+            //hash password
+            $hashedPassword = hash("sha256", $Password);
+
+            $sqlLogin = "SELECT StudentId FROM Student WHERE StudentId = '$id' AND Password = '$hashedPassword'";
             $resultSet = $pdo -> query($sqlLogin);
             $row = $resultSet -> fetch(PDO::FETCH_ASSOC);
             if(!$row){

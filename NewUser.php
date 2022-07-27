@@ -37,9 +37,25 @@
             $_SESSION["Password"] = $Password;
             $_SESSION["passwordAgain"] = $passwordAgain;
 
-            $sqlInsert = "INSERT INTO Student(StudentId, Name, Phone, Password) VALUES('$id', '$name', '$phone', '$Password')";
+            //Method 1: prevent SQL-injection attack - mysqli_real_escape_string()
+            $conn = new mysqli("localhost", $username, $password);
+            $id = mysqli_real_escape_string($conn, $id);
+            $name = mysqli_real_escape_string($conn, $name);
+            $phone = mysqli_real_escape_string($conn, $phone);
+            $Password = mysqli_real_escape_string($conn, $Password);
+
+            //hash password
+            $hashedPassword = hash("sha256", $Password);
+
+            $sqlInsert = "INSERT INTO Student(StudentId,Name,Phone,Password) VALUES('$id','$name','$phone','$hashedPassword')";
             $pdo -> query($sqlInsert);
 
+            //Method 2: prevent SQL-injection attack - PDO prepared statement
+            //$sqlInsert = "INSERT INTO Student (StudentId,Name,Phone,Password) VALUES (?,?,?,?)";
+            //$stmt = $pdo->prepare($sqlInsert);
+            //$stmt->execute([$id,$name,$phone,$hashedPassword]);
+            //$pdo = null;
+            
             header("Location: CourseSelection.php");
         }
     }
