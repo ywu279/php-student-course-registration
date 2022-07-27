@@ -16,17 +16,19 @@
         $passwordErr = ValidatePassword($Password);
 
         if(!$idErr && !$passwordErr){
-            //prevent SQL-injection attack
-            $conn = new mysqli("localhost", $username, $password);
-            $id = mysqli_real_escape_string($conn, $id);
-            $Password = mysqli_real_escape_string($conn, $Password);
+            //Method 1: prevent SQL-injection attack - mysqli_real_escape_string()
+            //$conn = new mysqli("localhost", $username, $password);
+            //$id = mysqli_real_escape_string($conn, $id);
+            //$Password = mysqli_real_escape_string($conn, $Password);
 
             //hash password
             $hashedPassword = hash("sha256", $Password);
 
-            $sqlLogin = "SELECT StudentId FROM Student WHERE StudentId = '$id' AND Password = '$hashedPassword'";
-            $resultSet = $pdo -> query($sqlLogin);
-            $row = $resultSet -> fetch(PDO::FETCH_ASSOC);
+            //Method 2: prevent SQL-injection attack - PDO prepared statement
+            $sqlLogin = "SELECT StudentId FROM Student WHERE StudentId = :id AND Password = :hashedPassword";
+            $preparedStatement = $pdo -> prepare($sqlLogin);
+            $preparedStatement -> execute(['id'=>$id, 'hashedPassword'=>$hashedPassword]);
+            $row = $preparedStatement -> fetch(PDO::FETCH_ASSOC);
             if(!$row){
                 $logInErr = "Incorrect student ID and/or Password!";
             }

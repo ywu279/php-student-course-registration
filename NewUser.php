@@ -14,9 +14,11 @@
     $pdo = new PDO($dsn, $username, $password);
 
     if(isset($submit)){  //if the page is requested due to the form submission, NOT the first time request
-        $sqlId = "SELECT StudentId FROM Student WHERE StudentId = '$id'";
-        $resultSet = $pdo -> query($sqlId);
-        $row = $resultSet -> fetch(PDO::FETCH_ASSOC);
+        //Method 2: prevent SQL-injection attack - PDO prepared statement
+        $sqlId = "SELECT StudentId FROM Student WHERE StudentId = :id";
+        $preparedStatement1 = $pdo -> prepare($sqlId);
+        $preparedStatement1 -> execute(['id'=>$id]);
+        $row = $preparedStatement1 -> fetch(PDO::FETCH_ASSOC);
         if($row){
             $idErr = "A student with this ID has already signed up";
         }
@@ -38,23 +40,19 @@
             $_SESSION["passwordAgain"] = $passwordAgain;
 
             //Method 1: prevent SQL-injection attack - mysqli_real_escape_string()
-            $conn = new mysqli("localhost", $username, $password);
-            $id = mysqli_real_escape_string($conn, $id);
-            $name = mysqli_real_escape_string($conn, $name);
-            $phone = mysqli_real_escape_string($conn, $phone);
-            $Password = mysqli_real_escape_string($conn, $Password);
+            //$conn = new mysqli("localhost", $username, $password);
+            //$id = mysqli_real_escape_string($conn, $id);
+            //$name = mysqli_real_escape_string($conn, $name);
+            //$phone = mysqli_real_escape_string($conn, $phone);
+            //$Password = mysqli_real_escape_string($conn, $Password);
 
             //hash password
             $hashedPassword = hash("sha256", $Password);
 
-            $sqlInsert = "INSERT INTO Student(StudentId,Name,Phone,Password) VALUES('$id','$name','$phone','$hashedPassword')";
-            $pdo -> query($sqlInsert);
-
             //Method 2: prevent SQL-injection attack - PDO prepared statement
-            //$sqlInsert = "INSERT INTO Student (StudentId,Name,Phone,Password) VALUES (?,?,?,?)";
-            //$stmt = $pdo->prepare($sqlInsert);
-            //$stmt->execute([$id,$name,$phone,$hashedPassword]);
-            //$pdo = null;
+            $sqlInsert = "INSERT INTO Student(StudentId,Name,Phone,Password) VALUES(:id,:name,:phone,:hashedPassword)";
+            $preparedStatement2 = $pdo -> prepare($sqlInsert);
+            $preparedStatement2 -> execute(['id'=>$id, 'name'=>$name, 'phone'=>$phone, 'hashedPassword'=>$hashedPassword]);
             
             header("Location: CourseSelection.php");
         }
