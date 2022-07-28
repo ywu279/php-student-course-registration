@@ -9,9 +9,8 @@
     $passwordAgainErr = "";
 
     //connect to MySQL DB
-    $dbConnection = parse_ini_file("Lab5.ini");
-    extract($dbConnection);
-    $pdo = new PDO($dsn, $username, $password);
+    include("./Common/config/db.php");
+    $pdo = connect();
 
     if(isset($submit)){  //if the page is requested due to the form submission, NOT the first time request
         //Method 2: prevent SQL-injection attack - PDO prepared statement

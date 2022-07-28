@@ -7,9 +7,8 @@
     $logInErr = "";
 
     //connect to MySQL DB
-    $dbConnection = parse_ini_file("Lab5.ini");
-    extract($dbConnection);
-    $pdo = new PDO($dsn, $username, $password);
+    include("./Common/config/db.php");
+    $pdo = connect();
 
     if(isset($submit)){
         $idErr = ValidateId($id);
