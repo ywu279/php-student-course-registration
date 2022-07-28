@@ -52,7 +52,7 @@
             $sqlInsert = "INSERT INTO Student(StudentId,Name,Phone,Password) VALUES(:id,:name,:phone,:hashedPassword)";
             $preparedStatement2 = $pdo -> prepare($sqlInsert);
             $preparedStatement2 -> execute(['id'=>$id, 'name'=>$name, 'phone'=>$phone, 'hashedPassword'=>$hashedPassword]);
-            
+            $_SESSION["login"] = "true";
             header("Location: CourseSelection.php");
         }
     }
