@@ -34,8 +34,8 @@
 
     //get the number of weekly hours the user has registered for the semester
     $sqlHours = "SELECT SUM(c.WeeklyHours) AS hours
-                    FROM Registration r INNER JOIN Course c on r.CourseCode = c.CourseCode
-                    WHERE r.StudentId = '$id' AND r.SemesterCode = '$semester';";
+                 FROM Registration r INNER JOIN Course c on r.CourseCode = c.CourseCode
+                 WHERE r.StudentId = '$id' AND r.SemesterCode = '$semester';";
     $hoursSet = $pdo -> query($sqlHours);
     $row = $hoursSet -> fetch(PDO::FETCH_ASSOC);
     if($row){
@@ -49,8 +49,8 @@
         if(!isset($checkbox)){
             $errorMsg = "You need select at least one course!";
         }else{
-            foreach($checkbox as $courseCode){
-                $hoursChecked += intval($weeklyHours[$courseCode]);
+            foreach($checkbox as $name => $value){
+                $hoursChecked += $value;
             }
             if($hoursChecked > $remainingHours){
                 $errorMsg = "Your selection exceed the max weekly hours";
@@ -59,8 +59,8 @@
                 $errorMsg = "";
                 $sqlRegister = "INSERT INTO Registration (StudentId, CourseCode, SemesterCode) VALUES (?,?,?)";
                 $preparedStmt = $pdo -> prepare($sqlRegister);
-                foreach($checkbox as $courseCode){
-                    $preparedStmt -> execute([$id, $courseCode, $semester]);
+                foreach($checkbox as $name => $value){
+                    $preparedStmt -> execute([$id, $name, $semester]);
                 }
                 header("Location: CourseSelection.php");
             }
@@ -121,9 +121,9 @@
 
     //get a course list excluding user's registered courses
     $sqlCourse = "SELECT co.CourseCode, c.Title, c.WeeklyHours
-                        FROM CourseOffer co INNER JOIN Course c ON co.CourseCode = c.CourseCode
-                        LEFT OUTER JOIN (SELECT * FROM Registration WHERE StudentId = '$id')  r on co.CourseCode = r.CourseCode
-                        WHERE co.SemesterCode = '$semester'  AND r.StudentId IS null;";
+                  FROM CourseOffer co INNER JOIN Course c ON co.CourseCode = c.CourseCode
+                  LEFT OUTER JOIN (SELECT * FROM Registration WHERE StudentId = '$id')  r on co.CourseCode = r.CourseCode
+                  WHERE co.SemesterCode = '$semester'  AND r.StudentId IS null;";
     $courseSet = $pdo -> query($sqlCourse);
     foreach($courseSet as $row){
         print <<<table_body
@@ -131,8 +131,8 @@
                 <td>{$row['CourseCode']}</td>
                 <td>{$row['Title']}</td>
                 <td>{$row['WeeklyHours']}</td>
-                <td><input type="checkbox" name="checkbox[]" value="{$row['CourseCode']}"></td>
-                <input type="hidden" name="weeklyHours[{$row['CourseCode']}]" value="{$row['WeeklyHours']}">
+                <td><input type="checkbox" name="checkbox[{$row['CourseCode']}]" value="{$row['WeeklyHours']}"></td>
+                <!-- <input type="hidden" name="weeklyHours[{$row['CourseCode']}]" value="{$row['WeeklyHours']}"> -->
             </tr>
         table_body;
     }

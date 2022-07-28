@@ -23,12 +23,16 @@
     }
 
 
-    if(isset($delete)){
-
+    if(isset($confirmDelete)){
+        $sqlDelete = "DELETE FROM Registration WHERE StudentId = :StudentId AND SemesterCode = :SemesterCode AND CourseCode = :CourseCode;";
+        $deleteStmt = $pdo -> prepare($sqlDelete);
+        foreach($checkbox as $name => $value){
+            $deleteStmt -> execute(['StudentId' => $id, 'SemesterCode' => $name, 'CourseCode' => $value]);
+        }
+        header("Location: CurrentRegistration.php");
     }
 
     if(isset($clear)){
-        $errorMsg = "";
         $checkbox = "";
     }
 
@@ -62,10 +66,10 @@
 
     foreach($semesterArr as $s){
         $totalHours = 0;
-        $sqlRegistrations = "SELECT s.Year, s.Term, r.CourseCode, c.Title, c.WeeklyHours
-                         FROM Registration r INNER JOIN Course c ON r.CourseCode = c.CourseCode
-					                         INNER JOIN Semester s ON r.SemesterCode = s.SemesterCode
-                         WHERE r.StudentId = '$id' AND r.SemesterCode = '$s';";
+        $sqlRegistrations = "SELECT s.Year, s.Term, r.CourseCode, c.Title, c.WeeklyHours, r.SemesterCode
+                             FROM Registration r INNER JOIN Course c ON r.CourseCode = c.CourseCode
+                                                 INNER JOIN Semester s ON r.SemesterCode = s.SemesterCode
+                             WHERE r.StudentId = '$id' AND r.SemesterCode = '$s';";
         $registrationsSet = $pdo -> query($sqlRegistrations);
         foreach($registrationsSet as $row){
             print <<<table_body
@@ -76,7 +80,7 @@
                 <td>{$row['Title']}</td>
                 <td></td>
                 <td>{$row['WeeklyHours']}</td>
-                <td><input type="checkbox" name="checkbox[]" value="{$row['CourseCode']}"></td>
+                <td><input type="checkbox" name="checkbox[{$row['SemesterCode']}]" value="{$row['CourseCode']}"></td>
             </tr>
             table_body;
             $totalHours += $row['WeeklyHours'];
@@ -86,16 +90,21 @@
 
     print <<<HTML
                 </table>
-                <input type="submit" name="delete" id="delete" value="Delete Selected" class="btn btn-primary">
+                <input type="button" name="delete" id="delete" value="Delete Selected" class="btn btn-primary">
                 <input type="submit" name="clear" value="Clear" class="btn btn-primary">
+                <input type="submit" name="confirmDelete" id="confirmDelete" hidden>
             </form>
         </div>
 
         <script>
             document.getElementById("delete").addEventListener("click", function(){
-                confirm("The selected registrations will be deleted!")
+                let text = "The selected registrations will be deleted!"
+                if(confirm(text) === true){
+                    document.getElementById("confirmDelete").click()
+                }
             })
         </script>
     HTML;
+
     include("./Common/Footer.php");
 ?>
