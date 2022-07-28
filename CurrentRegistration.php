@@ -26,9 +26,11 @@
     if(isset($confirmDelete)){
         $sqlDelete = "DELETE FROM Registration WHERE StudentId = :StudentId AND SemesterCode = :SemesterCode AND CourseCode = :CourseCode;";
         $deleteStmt = $pdo -> prepare($sqlDelete);
-        foreach($checkbox as $name => $value){
-            $deleteStmt -> execute(['StudentId' => $id, 'SemesterCode' => $name, 'CourseCode' => $value]);
+
+        foreach ($checkbox as $name => $value) {
+            $deleteStmt->execute(['StudentId' => $id, 'SemesterCode' => $value, 'CourseCode' => $name]);
         }
+
         header("Location: CurrentRegistration.php");
     }
 
@@ -80,7 +82,7 @@
                 <td>{$row['Title']}</td>
                 <td></td>
                 <td>{$row['WeeklyHours']}</td>
-                <td><input type="checkbox" name="checkbox[{$row['SemesterCode']}]" value="{$row['CourseCode']}"></td>
+                <td><input type="checkbox" name="checkbox[{$row['CourseCode']}]" value="{$row['SemesterCode']}"></td>
             </tr>
             table_body;
             $totalHours += $row['WeeklyHours'];

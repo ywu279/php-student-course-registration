@@ -24,12 +24,19 @@
         }
     }
 
+    //get a list of semester
+    $sqlSemester = "SELECT * FROM Semester";
+    $semesterSet = $pdo -> query($sqlSemester);
+    foreach($semesterSet as $row){
+        $semesterList[] = $row['SemesterCode']; //to get semesterList[0] so that display 22F's course list when the page is first loaded
+    }
+
 
     if(isset($semesterBtn)){
         $_SESSION["semester"] = $semester;
+    } else{
+        $semester = $_SESSION["semester"] ?? $semesterList[0]; //display 22F's course list when the page is first loaded
     }
-
-    $semester = $_SESSION["semester"] ?? $semesterList[0]; //display 22F's course list when the page is first loaded
 
 
     //get the number of weekly hours the user has registered for the semester
@@ -89,14 +96,12 @@
 
     //get a dropdown list of semesters from DB
     $sqlSemester = "SELECT * FROM Semester";
-    {
-        $semesterSet = $pdo -> query($sqlSemester);
-        foreach($semesterSet as $row){
-            $selected = $semester == $row['SemesterCode'] ? "selected" : "";
-            echo "<option value='{$row['SemesterCode']}' $selected>{$row['Year']} {$row['Term']}</option>";
-            $semesterList[] = $row['SemesterCode']; //to get semesterList[0] so that display 22F's course list when the page is first loaded
-        }
+    $semesterSet = $pdo -> query($sqlSemester);
+    foreach($semesterSet as $row){
+        $selected = $semester == $row['SemesterCode'] ? "selected" : "";
+        echo "<option value='{$row['SemesterCode']}' $selected>{$row['Year']} {$row['Term']}</option>";
     }
+
 
     print <<<HTML
             </select>
@@ -118,6 +123,7 @@
                 <th>Select</th>
             </tr>
     HTML;
+
 
     //get a course list excluding user's registered courses
     $sqlCourse = "SELECT co.CourseCode, c.Title, c.WeeklyHours
