@@ -9,11 +9,12 @@ To implement an online course registration web application that allows students 
 - [PhpStorm](https://www.jetbrains.com/phpstorm/)
 
 ## ERD 
-![ERD](https://user-images.githubusercontent.com/58931129/181647979-5dd800e7-1927-4fc7-963a-6cc09e7290c9.png)
+<img src="https://user-images.githubusercontent.com/58931129/181647979-5dd800e7-1927-4fc7-963a-6cc09e7290c9.png" width="700px">
 
 ## Get Started with the Database
 1. On PhpMyAdmin, create a database **CST8257**, create a new user `PHPSCRIPT` with password `1234` and grant all privileges to this user to access the **CST8257** database.
 2. Run "Script for Creating tables in CST8257 Database.sql" to create the Student table, Course table, Semester table, CourseOffer table, Registration table.
+<img src="https://user-images.githubusercontent.com/58931129/181652171-6d99b5d1-0965-40f3-9372-2029df8367d7.png" width="700px">
 3. Run "Script for Populating CST8257 Database.sql" to insert data into the Course table, Semester table, and CourseOffer table.
 
 ## Objectives
@@ -56,20 +57,20 @@ To implement an online course registration web application that allows students 
 
 ## Screenshots
 ### Home
-![image](https://user-images.githubusercontent.com/58931129/181651957-c5d9cf9a-18cb-4131-9fa5-0a6e3dfaebd1.png)
+<img src="https://user-images.githubusercontent.com/58931129/181651957-c5d9cf9a-18cb-4131-9fa5-0a6e3dfaebd1.png" width="600px" >
 
 ### Sign Up
-![image](https://user-images.githubusercontent.com/58931129/181651603-7a282808-32c4-4948-9429-72dc6df0ce88.png)
+<img src="https://user-images.githubusercontent.com/58931129/181651603-7a282808-32c4-4948-9429-72dc6df0ce88.png" width="600px" >
 
 ### Log In
-![image](https://user-images.githubusercontent.com/58931129/181651673-874c5493-b21c-45e0-8922-4bb0165864cf.png)
+<img src="https://user-images.githubusercontent.com/58931129/181651673-874c5493-b21c-45e0-8922-4bb0165864cf.png" width="600px" >
 
 ### Course Selection
-![image](https://user-images.githubusercontent.com/58931129/181651733-ae1c2339-d4f2-4c4d-865a-8f5a069be3c9.png)
+<img src="https://user-images.githubusercontent.com/58931129/181651733-ae1c2339-d4f2-4c4d-865a-8f5a069be3c9.png" width="800px" >
 
 ### Current Registration
-![image](https://user-images.githubusercontent.com/58931129/181651836-e1bccb21-783b-4d71-9e46-76109a7532d0.png)
-![image](https://user-images.githubusercontent.com/58931129/181651890-ea29956e-35f3-4035-9829-01a67d0a9cfe.png)
+<img src="https://user-images.githubusercontent.com/58931129/181651836-e1bccb21-783b-4d71-9e46-76109a7532d0.png" width="800px" >
+<img src="https://user-images.githubusercontent.com/58931129/181651890-ea29956e-35f3-4035-9829-01a67d0a9cfe.png" width="800px" >
 
 
 
