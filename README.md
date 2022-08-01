@@ -20,28 +20,28 @@ To implement an online course registration web application that allows students 
 ## Objectives
 - Process HTML form validation with **RegEx** - `preg_match($regex, $Password)`
 - Use **session** management to temporarily store the data
-  ```
+  ```php
   $_SESSION["id"] = $id;
   
   //if the data has been stored in the session, display the data on the page when the user enters this page
   $id = $_SESSION["id"] ?? "";
   ```
 - Access the database with the **PDO** object
-  ```
+  ```php
   ; this is the initialization file "Lab5.ini" that contains the database connection data for the application
   [database connection]
   dsn = "mysql:host=localhost;dbname=cst8257;port=3306;charset=utf8"
   username = "PHPSCRIPT"
   password = "1234"
   ```
-  ```
+  ```php
   $dbConnection = parse_ini_file("Lab5.ini");
   extract($dbConnection);
   $pdo = new PDO($dsn, $username, $password);
   ```
 - Develope Login/Register feature with **hashed passwords** and save the hashed password in the database - `hash("sha256", $Password)`
 - Use the **Prepared Statement** to prevent SQL Injection Attack for data access in PHP
-  ```
+  ```php
   //fetch one row (and the only one) from the prepared statement after execution
   $sqlLogin = "SELECT StudentId FROM Student WHERE StudentId = :id AND Password = :hashedPassword";
   $preparedStatement = $pdo -> prepare($sqlLogin);
