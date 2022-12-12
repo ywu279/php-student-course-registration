@@ -1,6 +1,9 @@
 # Student Course Registration - PHP
 To implement an online course registration web application that allows students to signup/login, register courses, and show the student's current registration summary via accessing the MySQL database.
 
+## Disclaimer
+This project is a school project. It can only be used for educational purposes only. Please do not submit it as your own work.
+
 ## Built with
 - [AMPPS](https://ampps.com/) - A complete package of Apache, MySQL, and PHP on your desktop, same like the server that provides many open source web applications
 <img src="https://user-images.githubusercontent.com/58931129/181635566-09586a5d-1181-4201-834e-8a9fcada1fae.png" width="200px">
